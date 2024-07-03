@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main() {
+    double nota1, nota2;
+    double conta;
+
+    // Leitura das notas
+    scanf("%lf", &nota1);
+    scanf("%lf", &nota2);
+    
+    // Cálculo da média ponderada
+    conta = ((nota1 * 3.5) + (nota2 * 7.5)) / 11.0;
+    
+    // Impressão do resultado formatado
+    printf("MEDIA = %.5lf\n", conta);
+
+    return 0;
+}
