@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int t, conta; 
+
+int main() {
+    scanf("%d", &t);
+    
+    conta = t*4;
+    
+    printf("%d\n", conta);
+    
+    return 0;
+}
