@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+int main() {
+    int N;
+    
+    while (1) {
+        scanf("%d", &N);
+        
+        // Se N for 0, terminar a leitura
+        if (N == 0) {
+            break;
+        }
+        
+        int resultados[N];
+        int maria = 0, joao = 0;
+        
+
+        for (int i = 0; i < N; i++) {
+            scanf("%d", &resultados[i]);
+            if (resultados[i] == 0) {
+                maria++;
+            } else if (resultados[i] == 1) {
+                joao++;
+            }
+        }
+        
+        printf("Mary won %d times and John won %d times\n", maria, joao);
+    }
+    
+    return 0;
+}
