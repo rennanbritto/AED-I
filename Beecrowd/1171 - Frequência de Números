@@ -7,7 +7,7 @@ int main() {
     // Array para armazenar as frequências dos números
     int frequencias[2001] = {0};
 
-    // Ler os N valores e atualizar as frequências
+    // Ler os N valores e atualizar as frequências no array, armazenando a quantidade no determinado num
     for (int i = 0; i < N; i++) {
         int x;
         scanf("%d", &x);
