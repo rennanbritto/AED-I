@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAMANHO_MAX 100000
+
+// Função para comparar e para ordenação crescente
+int compararAsc(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+// Função para comparar e para ordenação decrescente
+int compararDesc(const void *a, const void *b) {
+    return (*(int*)b - *(int*)a);
+}
+
+int main() {
+    int N;
+    int num[TAMANHO_MAX];
+    int par[TAMANHO_MAX];
+    int impar[TAMANHO_MAX];
+    int parContagem = 0, imparContagem = 0;
+
+    scanf("%d", &N);
+
+    for (int i = 0; i < N; i++) {
+        scanf("%d", &num[i]);
+
+        if (num[i] % 2 == 0) {
+            par[parContagem++] = num[i];
+        } else {
+            impar[imparContagem++] = num[i];
+        }
+    }
+
+    qsort(par, parContagem, sizeof(int), compararAsc);
+    qsort(impar, imparContagem, sizeof(int), compararDesc);
+
+    for (int i = 0; i < parContagem; i++) {
+        printf("%d\n", par[i]);
+    }
+
+    for (int i = 0; i < imparContagem; i++) {
+        printf("%d\n", impar[i]);
+    }
+
+    return 0;
+}
