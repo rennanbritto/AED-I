@@ -1,0 +1,13 @@
+#include <stdio.h>
+ 
+int main() {
+    int A, B, conta = 0;
+    
+    scanf("%d\n", &A);
+    scanf("%d", &B);
+    
+    conta = A + B;
+    
+    printf("X = %d\n", conta);
+    return 0;
+}
