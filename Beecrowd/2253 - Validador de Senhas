@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int senha_valida(const char *senha) {
+    int tamanho = strlen(senha);
+    if (tamanho < 6 || tamanho > 32) {
+        return 0;
+    }
+    
+    int tem_maiuscula = 0, tem_minuscula = 0, tem_digito = 0;
+    
+    for (int i = 0; i < tamanho; i++) {
+        if (isupper(senha[i])) { /
+            tem_maiuscula = 1;
+        } else if (islower(senha[i])) { 
+            tem_minuscula = 1;
+        } else if (isdigit(senha[i])) { // Verifica se há pelo menos um dígito
+            tem_digito = 1;
+        } else if (!isalnum(senha[i])) { // Verifica se há caracteres que não são letras nem dígitos
+            return 0; // Senha inválida se contiver caracteres especiais, espaços ou acentos
+        }
+    }
+    
+    if (tem_maiuscula && tem_minuscula && tem_digito) {
+        return 1;
+    }
+    
+    return 0;
+}
+
+int main() {
+    char senha[100];
+    
+    while (fgets(senha, sizeof(senha), stdin)) {
+        // Remove o caractere de nova linha
+        senha[strcspn(senha, "\n")] = 0;
+        
+        if (senha_valida(senha)) {
+            printf("Senha valida.\n");
+        } else {
+            printf("Senha invalida.\n");
+        }
+    }
+    
+    return 0;
+}
