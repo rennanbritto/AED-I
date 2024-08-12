@@ -52,12 +52,12 @@ int main() {
     for (int i = 0; i < N; i++) {
         if (!visitado[i]) {
             if (busca_profundidade(i) != 0) {
-                printf("IMPOSSÍVEL\n");
+                printf("IMPOSSIBLE\n");
                 return 0;
             }
         }
     }
 
-    printf("POSSÍVEL\n");
+    printf("POSSIBLE\n");
     return 0;
 }
