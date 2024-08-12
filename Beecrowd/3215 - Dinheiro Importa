@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_N 10000
+
+int N, M;               
+int deve[MAX_N];         // Quanto cada pessoa deve ou é devida
+int visitado[MAX_N];   
+int *amizades[MAX_N];    // Lista de adjacência para o grafo (amizades)
+int tamanho_lista[MAX_N];
+
+// Função para adicionar uma aresta no grafo
+void adicionar_aresta(int x, int y) {
+    amizades[x] = realloc(amizades[x], (tamanho_lista[x] + 1) * sizeof(int));
+    amizades[y] = realloc(amizades[y], (tamanho_lista[y] + 1) * sizeof(int));
+    amizades[x][tamanho_lista[x]++] = y;
+    amizades[y][tamanho_lista[y]++] = x;
+}
+
+// Função de busca em profundidade
+int busca_profundidade(int no) {
+    visitado[no] = 1;
+    int soma = deve[no];  // Inicia a soma com o valor da dívida do nó atual
+
+    // Visita todos os vizinhos do nó atual
+    for (int i = 0; i < tamanho_lista[no]; i++) {
+        int vizinho = amizades[no][i];
+        if (!visitado[vizinho]) {
+            soma += busca_profundidade(vizinho);  // Soma as dívidas dos vizinhos
+        }
+    }
+
+    return soma;
+}
+
+int main() {
+    // Leitura da entrada
+    scanf("%d %d", &N, &M);
+
+    for (int i = 0; i < N; i++) {
+        scanf("%d", &deve[i]);
+    }
+
+    for (int i = 0; i < M; i++) {
+        int x, y;
+        scanf("%d %d", &x, &y);
+        adicionar_aresta(x, y);
+    }
+
+    // Verifica todos os componentes conectados
+    for (int i = 0; i < N; i++) {
+        if (!visitado[i]) {
+            if (busca_profundidade(i) != 0) {
+                printf("IMPOSSÍVEL\n");
+                return 0;
+            }
+        }
+    }
+
+    printf("POSSÍVEL\n");
+    return 0;
+}
