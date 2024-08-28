@@ -1,0 +1,47 @@
+#include <string.h>
+#include <stdio.h>
+
+// Função que retorna a duração da nota musical
+double obterDuracaoNota(char nota) {
+    switch (nota) {
+    case 'W': return 1.0;     
+    case 'H': return 0.5;     
+    case 'Q': return 0.25;    
+    case 'E': return 0.125;   
+    case 'S': return 0.0625;  
+    case 'T': return 0.03125; 
+    case 'X': return 0.015625;
+    default: return 0.0;    
+    }
+}
+
+int main() {
+    int contagem;           
+    double duracaoAtual;   
+    char fraseMusical[1000]; 
+
+    while (scanf("%[^\n]\n", fraseMusical) != EOF) {
+        // Verifica se a frase é "*", que indica o fim da entrada
+        if (strcmp(fraseMusical, "*") == 0)
+            break;
+
+        contagem = 0;
+        duracaoAtual = 0.0;
+
+        for (int i = 0; i < strlen(fraseMusical); ++i) {
+            if (fraseMusical[i] == '/') {
+                // Se a duração acumulada for igual a 1.0, conta uma frase completa
+                if (duracaoAtual == 1.0)
+                    ++contagem;
+                duracaoAtual = 0.0; // Reseta a duração
+            } else {
+                // Acumula a duração da nota
+                duracaoAtual += obterDuracaoNota(fraseMusical[i]);
+            }
+        }
+
+        printf("%d\n", contagem);
+    }
+
+    return 0;
+}
