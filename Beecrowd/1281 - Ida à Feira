@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_ITENS 100
+
+int main() {
+    int numCasos, numFrutas, numCompras, quantidade;
+    char nomeFruta[50];
+    char listaFrutas[MAX_ITENS][50];
+    double precosFrutas[MAX_ITENS];
+
+    scanf("%d", &numCasos);
+
+    for (int caso = 0; caso < numCasos; ++caso) {
+        scanf("%d", &numFrutas);
+
+        for (int i = 0; i < numFrutas; ++i) {
+            scanf("%s %lf", listaFrutas[i], &precosFrutas[i]);
+        }
+
+        scanf("%d", &numCompras);
+
+        double totalGasto = 0.0;
+
+        for (int i = 0; i < numCompras; ++i) {
+            scanf("%s %d", nomeFruta, &quantidade);
+
+            for (int j = 0; j < numFrutas; ++j) {
+                if (strcmp(nomeFruta, listaFrutas[j]) == 0) {
+                    totalGasto += quantidade * precosFrutas[j];
+                    break;
+                }
+            }
+        }
+
+        printf("R$ %.2lf\n", totalGasto);
+    }
+
+    return 0;
+}
