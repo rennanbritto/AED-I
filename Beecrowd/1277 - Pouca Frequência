@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int T; // Número de casos de teste
+    scanf("%d", &T);
+
+    while (T--) {
+        int N; // Número de estudantes
+        scanf("%d", &N);
+
+        char nomes[N][51]; // Lista de nomes dos estudantes
+        char frequencia[N][101]; // Lista de registros de frequência
+
+        // Lendo os nomes dos estudantes
+        for (int i = 0; i < N; i++) {
+            scanf("%s", nomes[i]);
+        }
+
+        // Lendo os registros de frequência
+        for (int i = 0; i < N; i++) {
+            scanf("%s", frequencia[i]);
+        }
+
+        int primeiro = 1; // Variável para controle da impressão
+
+        for (int i = 0; i < N; i++) {
+            int totalAulas = 0, presencas = 0;
+
+            // Calculando o total de aulas e presenças válidas
+            for (int j = 0; frequencia[i][j] != '\0'; j++) {
+                if (frequencia[i][j] == 'P') {
+                    presencas++;
+                    totalAulas++;
+                } else if (frequencia[i][j] == 'A') {
+                    totalAulas++;
+                }
+                // 'M' (atestado médico) não conta nem como presença nem como ausência
+            }
+
+            // Calculando a porcentagem de presença
+            if (totalAulas > 0 && (presencas * 100.0 / totalAulas) < 75.0) {
+                if (!primeiro) {
+                    printf(" ");
+                }
+                printf("%s", nomes[i]);
+                primeiro = 0;
+            }
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}
