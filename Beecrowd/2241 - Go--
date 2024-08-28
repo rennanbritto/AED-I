@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAXN 500
+
+int tabuleiro[MAXN + 1][MAXN + 1];
+int pretas[MAXN + 1][MAXN + 1];
+int brancas[MAXN + 1][MAXN + 1];
+
+int main() {
+    int N, P;
+    scanf("%d %d", &N, &P);
+
+    // Leitura das pedras pretas
+    for (int i = 0; i < P; i++) {
+        int linha, coluna;
+        scanf("%d %d", &linha, &coluna);
+        tabuleiro[linha][coluna] = 1;
+    }
+
+    // Leitura das pedras brancas
+    for (int i = 0; i < P; i++) {
+        int linha, coluna;
+        scanf("%d %d", &linha, &coluna);
+        tabuleiro[linha][coluna] = 2;
+    }
+
+    // Pré-processamento para contar sub-áreas quadradas
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            pretas[i][j] = pretas[i-1][j] + pretas[i][j-1] - pretas[i-1][j-1] + (tabuleiro[i][j] == 1);
+            brancas[i][j] = brancas[i-1][j] + brancas[i][j-1] - brancas[i-1][j-1] + (tabuleiro[i][j] == 2);
+        }
+    }
+
+    int areasPretas = 0, areasBrancas = 0;
+
+    // Verificação das sub-áreas quadradas
+    for (int tamanho = 1; tamanho <= N; tamanho++) {
+        for (int i = 1; i + tamanho - 1 <= N; i++) {
+            for (int j = 1; j + tamanho - 1 <= N; j++) {
+                int x1 = i, y1 = j;
+                int x2 = i + tamanho - 1, y2 = j + tamanho - 1;
+
+                int qtdPretas = pretas[x2][y2] - pretas[x1-1][y2] - pretas[x2][y1-1] + pretas[x1-1][y1-1];
+                int qtdBrancas = brancas[x2][y2] - brancas[x1-1][y2] - brancas[x2][y1-1] + brancas[x1-1][y1-1];
+
+                if (qtdPretas > 0 && qtdBrancas == 0) {
+                    areasPretas++;
+                }
+                if (qtdBrancas > 0 && qtdPretas == 0) {
+                    areasBrancas++;
+                }
+            }
+        }
+    }
+
+    printf("%d %d\n", areasPretas, areasBrancas);
+
+    return 0;
+}
