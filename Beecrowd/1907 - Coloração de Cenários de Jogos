@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <string.h>
+
+// Dimensões máximas da imagem
+#define MAX 1024
+
+int N, M;
+char imagem[MAX][MAX];
+int visitado[MAX][MAX];
+
+// Movimentos possíveis: cima, baixo, esquerda, direita
+int movimentos[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+// Estrutura para a pilha usada na DFS iterativa
+typedef struct {
+    int x, y;
+} PilhaElemento;
+
+PilhaElemento pilha[MAX * MAX];
+int topoPilha;
+
+// Função DFS iterativa para explorar toda a região conectada de pixels brancos
+void dfsIterativa(int x, int y) {
+    topoPilha = 0;
+    pilha[topoPilha++] = (PilhaElemento){x, y};
+    visitado[x][y] = 1;
+
+    while (topoPilha > 0) {
+        PilhaElemento atual = pilha[--topoPilha];
+
+        for (int i = 0; i < 4; i++) {
+            int novoX = atual.x + movimentos[i][0];
+            int novoY = atual.y + movimentos[i][1];
+
+            // Verifica se o novo pixel está dentro dos limites e se é um pixel branco não visitado
+            if (novoX >= 0 && novoX < N && novoY >= 0 && novoY < M && imagem[novoX][novoY] == '.' && !visitado[novoX][novoY]) {
+                visitado[novoX][novoY] = 1;
+                pilha[topoPilha++] = (PilhaElemento){novoX, novoY};
+            }
+        }
+    }
+}
+
+int main() {
+    // Lê as dimensões da imagem
+    scanf("%d %d", &N, &M);
+
+    // Lê a imagem
+    for (int i = 0; i < N; i++) {
+        scanf("%s", imagem[i]);
+    }
+
+    // Inicializa o array de visitados com zero (nenhum pixel visitado ainda)
+    memset(visitado, 0, sizeof(visitado));
+
+    int cliques = 0;
+
+    // Percorre todos os pixels da imagem
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            // Se encontrar um pixel branco não visitado, inicia uma DFS iterativa
+            if (imagem[i][j] == '.' && !visitado[i][j]) {
+                dfsIterativa(i, j);
+                cliques++;
+            }
+        }
+    }
+
+    // Imprime o número de cliques necessários
+    printf("%d\n", cliques);
+
+    return 0;
+}
