@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_BOLAS 90
+#define MAX_POSSIBILIDADES 91
+
+int main() {
+    int N, B, resposta, bolas[MAX_BOLAS];
+    bool possibilidades[MAX_POSSIBILIDADES];
+
+    while (scanf("%d %d", &N, &B) == 2) {
+        if (N == 0 && B == 0)
+            break;
+
+        // Inicializa o vetor de possibilidades
+        for (int i = 0; i < N + 1; ++i) {
+            possibilidades[i] = false;
+        }
+        possibilidades[0] = true;
+        resposta = 0;
+
+        // Le as bolas
+        for (int i = 0; i < B; ++i) {
+            scanf("%d", &bolas[i]);
+        }
+
+        // Calcula as diferenças e marca as possibilidades
+        for (int i = 0; i < B; ++i) {
+            for (int j = i + 1; j < B; ++j) {
+                int diff = abs(bolas[i] - bolas[j]);
+                if (diff <= N && !possibilidades[diff]) {
+                    possibilidades[diff] = true;
+                    ++resposta;
+                }
+            }
+        }
+
+        // Verifica se todas as diferenças de 1 a N são possíveis
+        bool completo = true;
+        for (int i = 1; i <= N; ++i) {
+            if (!possibilidades[i]) {
+                completo = false;
+                break;
+            }
+        }
+
+        printf("%c\n", completo ? 'Y' : 'N');
+    }
+
+    return 0;
+}
