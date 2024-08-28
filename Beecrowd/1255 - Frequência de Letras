@@ -1,0 +1,43 @@
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+
+int main() {
+    int quantidadeCasos;         
+    char frase[201];             
+    int maxFrequencia;           
+    int contagemLetras[26];      
+
+    scanf("%d\n", &quantidadeCasos);
+
+    // Processa cada frase
+    for (int i = 0; i < quantidadeCasos; ++i) {
+        memset(contagemLetras, 0, sizeof(contagemLetras)); // Inicializa o array de contagem
+
+        scanf("%[^\n]\n", frase); // Lê a frase
+
+        // Conta a frequência de cada letra
+        for (int j = 0; j < strlen(frase); ++j) {
+            if (isalpha(frase[j])) {
+                contagemLetras[tolower(frase[j]) - 'a']++;
+            }
+        }
+
+        // Encontra a maior frequência
+        maxFrequencia = 0;
+        for (int j = 0; j < 26; ++j) {
+            if (contagemLetras[j] > maxFrequencia) {
+                maxFrequencia = contagemLetras[j];
+            }
+        }
+
+        for (int j = 0; j < 26; ++j) {
+            if (contagemLetras[j] == maxFrequencia) {
+                printf("%c", j + 'a');
+            }
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
