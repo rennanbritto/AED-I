@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int origem, destino, peso;
+} Aresta;
+
+// Função para comparar arestas pelo peso (usado no qsort)
+int compararArestas(const void *a, const void *b) {
+    Aresta* a1 = (Aresta*)a;
+    Aresta* a2 = (Aresta*)b;
+    return a1->peso - a2->peso;
+}
+
+// Funções de união e busca com compressão de caminho e união por rank
+int buscar(int pai[], int i) {
+    if (pai[i] != i)
+        pai[i] = buscar(pai, pai[i]);
+    return pai[i];
+}
+
+void unir(int pai[], int rank[], int x, int y) {
+    int raizX = buscar(pai, x);
+    int raizY = buscar(pai, y);
+
+    if (raizX != raizY) {
+        if (rank[raizX] < rank[raizY])
+            pai[raizX] = raizY;
+        else if (rank[raizX] > rank[raizY])
+            pai[raizY] = raizX;
+        else {
+            pai[raizY] = raizX;
+            rank[raizX]++;
+        }
+    }
+}
+
+int kruskal(Aresta arestas[], int M, int N) {
+    // Ordenar as arestas pelo peso
+    qsort(arestas, N, sizeof(Aresta), compararArestas);
+
+    // Arrays para o Union-Find
+    int pai[M], rank[M];
+
+    // Inicializar cada vértice como seu próprio pai (representante)
+    for (int i = 0; i < M; i++) {
+        pai[i] = i;
+        rank[i] = 0;
+    }
+
+    int somaTotal = 0;
+    int arestasSelecionadas = 0;
+
+    // Processar cada aresta, tentando adicioná-la à MST
+    for (int i = 0; i < N; i++) {
+        int origem = arestas[i].origem;
+        int destino = arestas[i].destino;
+        int peso = arestas[i].peso;
+
+        // Verificar se essa aresta forma um ciclo
+        if (buscar(pai, origem) != buscar(pai, destino)) {
+            // Se não forma ciclo, incluir na MST
+            somaTotal += peso;
+            unir(pai, rank, origem, destino);
+            arestasSelecionadas++;
+        }
+
+        // Se já temos M-1 arestas selecionadas, podemos parar
+        if (arestasSelecionadas == M - 1)
+            break;
+    }
+
+    return somaTotal;
+}
+
+int main() {
+    int M, N;
+
+    while (1) {
+        // Ler o número de cidades (M) e o número de rotas (N)
+        scanf("%d %d", &M, &N);
+
+        // Condição de parada
+        if (M == 0 && N == 0) {
+            break;
+        }
+
+        Aresta arestas[N];
+
+        // Ler as arestas
+        for (int i = 0; i < N; i++) {
+            scanf("%d %d %d", &arestas[i].origem, &arestas[i].destino, &arestas[i].peso);
+        }
+
+        // Calcular a soma das distâncias na árvore geradora mínima
+        int resultado = kruskal(arestas, M, N);
+
+        // Imprimir o resultado
+        printf("%d\n", resultado);
+    }
+
+    return 0;
+}
