@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+
+#define TAMANHO_MAXIMO 21 
+
+int main() {
+    int N;  
+    scanf("%d", &N);
+
+    while (N--) {
+        int K;  
+        scanf("%d", &K);
+
+        char idioma_inicial[TAMANHO_MAXIMO];
+        char idioma_atual[TAMANHO_MAXIMO];
+        int todos_mesmo_idioma = 1;
+
+        scanf("%s", idioma_inicial);
+
+        for (int i = 1; i < K; i++) {
+  
+            scanf("%s", idioma_atual);
+            if (strcmp(idioma_inicial, idioma_atual) != 0) {
+                todos_mesmo_idioma = 0;
+            }
+        }
+
+        if (todos_mesmo_idioma) {
+            printf("%s\n", idioma_inicial);
+        } else {
+            printf("ingles\n");
+        }
+    }
+
+    return 0;
+}
