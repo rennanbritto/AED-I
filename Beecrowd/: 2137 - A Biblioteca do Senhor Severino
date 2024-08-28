@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LIVROS 1001
+#define TAMANHO_LIVRO 5
+
+// Função para trocar duas strings
+void trocar(char a[], char b[]) {
+    char temp[TAMANHO_LIVRO];
+    strcpy(temp, a);
+    strcpy(a, b);
+    strcpy(b, temp);
+}
+
+void ordenarLivros(char livros[][TAMANHO_LIVRO], int n) {
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (strcmp(livros[j], livros[j + 1]) > 0) {
+                trocar(livros[j], livros[j + 1]);
+            }
+        }
+    }
+}
+
+int main() {
+    int N;
+    char livros[MAX_LIVROS][TAMANHO_LIVRO];
+
+    while (scanf("%d", &N) != EOF) {
+        for (int i = 0; i < N; ++i) {
+            scanf("%s", livros[i]);
+        }
+
+        ordenarLivros(livros, N);
+
+        for (int i = 0; i < N; ++i) {
+            printf("%s\n", livros[i]);
+        }
+    }
+
+    return 0;
+}
