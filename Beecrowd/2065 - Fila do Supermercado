@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+int main(){
+    int i, n, m;
+
+    scanf("%d", &n);
+    int A[n]; 
+   
+    scanf("%d", &m);
+    int b[m];
+    
+    // Tempo por item para cada funcionário
+    for(i = 0; i < n; i++)
+        scanf("%d", &A[i]);
+
+    // Número de itens para cada cliente
+    for(i = 0; i < m; i++)
+        scanf("%d", &b[i]);
+    
+    int temp[n];
+    int t = 0; // Índice para iterar sobre os clientes
+    
+    while(t < m){
+        // Atribuição direta para os primeiros 'n' clientes, um por funcionário
+        if(t < n){
+            temp[t] = b[t] * A[t]; // Calcula o tempo de processamento para o t-ésimo cliente
+            t++;
+        } else {
+            int index = temp[0];
+            int z = 0;
+
+            // Encontra o funcionário que ficará livre mais cedo
+            for(i = 0; i < n; i++)
+                if(index > temp[i]) {
+                    index = temp[i];
+                    z = i;
+                }
+
+            // Atualiza o tempo de ocupação do funcionário escolhido
+            temp[z] += b[t] * A[z];
+            t++;
+        }
+    }
+
+    // Encontra o tempo total necessário para atender todos os clientes
+    int index = temp[0];
+    for(i = 0; i < n; i++)
+        if(index < temp[i])
+            index = temp[i];
+    printf("%d\n", index);
+}
